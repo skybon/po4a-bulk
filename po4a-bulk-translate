@@ -67,10 +67,15 @@ do
   for file in $FILES
   do
     basepath=$(echo $file | sed "s|.$SRCEXT||")
-    po="$lang/$basepath.${SRCEXT}.po"
-    translated_adoc="$basepath.$lang.${SRCEXT}"
+    po="$lang/$basepath.$SRCEXT.po"
+    translated_adoc="$basepath.$lang.$SRCEXT"
 
-    echo "Generating $TRANSLATEDIR/$translated_adoc from $basepath.${SRCEXT} and ${PODIR}/$po"
-    po4a-translate -M UTF-8 -L UTF-8 -k 0 -f ${SRCFORMAT} -m $SRCDIR/$file -p $PODIR/$po -l $TRANSLATEDIR/$translated_adoc
+    if [ -f $PODIR/$po ]
+    then
+      echo "Generating $TRANSLATEDIR/$translated_adoc from $basepath.$SRCEXT and $PODIR/$po"
+      po4a-translate -M UTF-8 -L UTF-8 -k 0 -f $SRCFORMAT -m $SRCDIR/$file -p $PODIR/$po -l $TRANSLATEDIR/$translated_adoc
+    else
+      echo "$PODIR/$po does not exist. Skipping..."
+    fi
   done
 done

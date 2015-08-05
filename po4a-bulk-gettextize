@@ -56,4 +56,5 @@ do
 
   echo "Generating template $POTDIR/$pot from $SRCDIR/$file"
   po4a-gettextize -M UTF-8 -L UTF-8 -f $SRCFORMAT -m $SRCDIR/$file -p $POTDIR/$pot
+  sed -i 's|Content-Type: text/plain; charset=CHARSET|Content-Type: text/plain; charset=UTF-8|' $POTDIR/$pot
 done
